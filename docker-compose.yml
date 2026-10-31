@@ -1,0 +1,36 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ask_ymca
+      POSTGRES_USER: ask_ymca
+      POSTGRES_PASSWORD: ask_ymca
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ask_ymca -d ask_ymca"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    network_mode: host
+    environment:
+      ASK_YMCA_ENVIRONMENT: development
+      ASK_YMCA_DATABASE_URL: postgresql+psycopg://ask_ymca:ask_ymca@db:5432/ask_ymca
+      ASK_YMCA_CORS_ORIGINS: '["http://localhost:3000","http://localhost:8000"]'
+      ASK_YMCA_OLLAMA_BASE_URL: http://localhost:11434
+      ASK_YMCA_OLLAMA_MODEL: qwen2.5:1.5b
+      ASK_YMCA_OLLAMA_EMBEDDING_MODEL: embeddinggemma
+      ASK_YMCA_ADMIN_TOKEN: ${ASK_YMCA_ADMIN_TOKEN:-local-development-only}
+    extra_hosts:
+      - "db:127.0.0.1"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

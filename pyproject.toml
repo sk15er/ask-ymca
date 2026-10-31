@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ask-ymca"
+version = "0.1.0"
+description = "Local-first student information assistant for J.C. Bose University of Science & Technology, YMCA"
+requires-python = ">=3.11"
+dependencies = [
+    "alembic>=1.13,<2",
+    "beautifulsoup4>=4.12,<5",
+    "fastapi>=0.115,<1",
+    "httpx>=0.27,<1",
+    "PyMuPDF>=1.24,<2",
+    "psycopg[binary]>=3.2,<4",
+    "pydantic-settings>=2.6,<3",
+    "pgvector>=0.3,<1",
+    "PyYAML>=6,<7",
+    "sqlalchemy>=2.0,<3",
+    "uvicorn[standard]>=0.32,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27,<1",
+    "pytest>=8.3,<9",
+    "ruff>=0.8,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ask_ymca = ["static/*.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

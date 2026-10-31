@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Ask YMCA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+:root{color-scheme:light;--bg:#FAF8F4;--card:#fff;--ink:#16140F;--sub:#7A756B;--line:#E9E4DA;--acc:#E4472B;--soft:#FDECE7;--sf:#F1EEE7;--ok:#2F7D5B;
+--serif:"Instrument Serif",Georgia,serif;--sans:Inter,-apple-system,"SF Pro Text","Segoe UI",sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}svg{display:block}
+@media(min-width:620px){body{background:#E7E3DA;display:grid;place-items:center}#app{height:min(880px,96%)!important;border-radius:38px;box-shadow:0 30px 80px rgba(40,30,10,.18),0 0 0 1px var(--line)}}
+#app{width:100%;max-width:430px;height:100%;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden;margin:0 auto}
+#stage{flex:1;min-height:0;position:relative}
+.scr{display:none;position:absolute;inset:0;flex-direction:column}.scr.on{display:flex}
+.in{flex:1;overflow-y:auto;padding:6px 20px 28px}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 2px}
+.brand{font:italic 22px var(--serif);display:flex;align-items:center;gap:8px}.brand i{width:9px;height:9px;border-radius:50%;background:var(--acc)}
+.av{width:36px;height:36px;border-radius:50%;border:0;background:var(--ink);color:#FAF8F4;font:italic 19px var(--serif)}
+.ib{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--ink)}
+h1{font:400 44px/1.02 var(--serif);letter-spacing:-.5px;margin:18px 0 16px}h1 em{color:var(--acc)}
+h2{font:400 34px/1.08 var(--serif);margin:6px 0 12px;letter-spacing:-.3px}
+.lab{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:.07em;margin:20px 0 8px}
+.meta{color:var(--sub);font-size:13px;margin:8px 0 0}.foot{text-align:center;color:var(--sub);font-size:12px;margin:22px 0 0}
+.askbar{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:14px 18px;color:var(--sub);box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.cu,.row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-top:8px;cursor:pointer;width:100%;text-align:left}
+.cu i{width:9px;height:9px;border-radius:50%;flex:none}.dd{font-size:12.5px;font-weight:600;background:var(--sf);border-radius:99px;padding:4px 10px;white-space:nowrap}
+.tx{flex:1;min-width:0}.tx b{display:block;font-weight:500;font-size:14.5px;line-height:1.3}.tx small{color:var(--sub);font-size:12.5px}
+.ic{width:40px;height:40px;border-radius:12px;background:var(--soft);color:var(--acc);display:grid;place-items:center;font-size:11px;font-weight:600;flex:none}.cv{color:var(--sub)}
+.gd{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tl{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:2px;transition:transform .15s}.tl:active{transform:scale(.97)}
+.tl b{font-weight:600;font-size:15px}.tl small{color:var(--sub);font-size:12px}.ti{width:40px;height:40px;border-radius:14px;background:var(--soft);color:var(--acc);display:grid;place-items:center;margin-bottom:8px}
+.fl{display:flex;gap:6px;overflow-x:auto;margin:0 -20px 4px;padding:0 20px 6px;scrollbar-width:none}.fl::-webkit-scrollbar{display:none}
+.fl button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:6px}.fl button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.od{width:8px;height:8px;border-radius:50%;background:#C9C3B6}.od.y{background:#34A56F}
+.m{margin:0 0 20px;animation:up .35s ease both}@keyframes up{from{opacity:0;transform:translateY(8px)}}
+.u{margin-left:auto;width:fit-content;max-width:85%;background:var(--ink);color:#FAF8F4;padding:10px 16px;border-radius:20px 20px 6px 20px}
+.b .t{font-size:16px;line-height:1.55}.t.warn{background:var(--soft);padding:12px 14px;border-radius:16px}
+.dots{display:flex;gap:5px;padding:8px 0}.dots s{width:7px;height:7px;border-radius:50%;background:var(--acc);opacity:.35;animation:bl 1s infinite}.dots s:nth-child(2){animation-delay:.15s}.dots s:nth-child(3){animation-delay:.3s}@keyframes bl{50%{opacity:1}}
+.srcs,.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sc{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:5px 10px;font-size:12.5px}.sc b{color:var(--acc);font-weight:600;margin-right:4px}.sc.big{width:100%;text-align:left;padding:12px 14px;border-radius:14px;font-size:14px;margin-top:14px}
+.ac{border:1px solid var(--line);background:none;border-radius:99px;padding:6px 14px;font-size:13px}.ac:active,.row:active,.cu:active{background:var(--sf)}
+.fb{margin-top:10px;font-size:12px;color:var(--sub)}.fb button{background:none;border:0;color:var(--sub);padding:2px 6px}
+.uh{display:none;margin-top:8px;font:11.5px/1.5 ui-monospace,Menlo,monospace;color:var(--sub);background:var(--sf);padding:8px 10px;border-radius:10px}body.dev .uh{display:block}
+.sg{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 2px;font-size:16px}.sg u{text-decoration:none;color:var(--acc)}
+.cmp{display:flex;gap:8px;padding:8px 16px 12px}.cmp input{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:13px 18px;font:inherit;outline:none}.cmp input:focus{border-color:var(--ink)}
+.go{width:48px;border:0;border-radius:50%;background:var(--ink);color:#fff;font-size:18px}
+#tabs{display:flex;border-top:1px solid var(--line);background:rgba(250,248,244,.94);padding:6px 6px 8px}
+.tb{flex:1;border:0;background:none;color:#9A9488;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:4px 0}.tb.on{color:var(--ink);font-weight:600}.tb.on::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--acc)}.tb:not(.on)::after{content:"";width:4px;height:4px}
+.srch{width:100%;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:11px 14px;font:inherit;outline:none;margin-bottom:10px}
+.st{background:none;border:0;font-size:20px;color:var(--sub);padding:4px}.st.on{color:var(--acc)}
+.nt i{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
+#px{position:absolute;inset:0;background:var(--bg);z-index:10;display:none;flex-direction:column;animation:ps .28s cubic-bezier(.2,.8,.2,1)}#px.on{display:flex}@keyframes ps{from{transform:translateX(24px);opacity:0}}
+.ph{display:flex;align-items:center;gap:12px;padding:14px 20px 6px}.ph span{font:italic 22px var(--serif)}
+.card2{background:var(--soft);border-radius:18px;padding:14px 16px;margin-top:12px}.card2 em{font-style:normal;font-size:11px;color:var(--acc);text-transform:uppercase;letter-spacing:.07em}.card2 p{margin:4px 0 0;font-size:15.5px}
+.kv{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding:11px 0;font-size:14.5px}.kv span{color:var(--sub)}.kv b{font-weight:500;text-align:right}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 4px}.stat div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px}.stat small{display:block;color:var(--sub);font-size:11.5px}.stat b{font-weight:600;font-size:13.5px;line-height:1.25;display:block}
+.tags{display:flex;flex-wrap:wrap;gap:6px}.tag{background:var(--sf);border-radius:99px;padding:4px 11px;font-size:12.5px}
+.pb{height:8px;border-radius:9px;background:var(--sf);position:relative;margin:8px 0}.pb i{display:block;height:100%;border-radius:9px;background:var(--ok)}.pb i.no{background:var(--acc)}.pb u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);left:75%}
+.stp{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-top:8px;font-size:14.5px}
+.ck{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12px;color:var(--sub);flex:none}.stp.dn{color:var(--sub)}.stp.dn span:last-child{text-decoration:line-through}.stp.dn .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.ac2{display:flex;gap:6px;margin-top:8px}.ac2 button{flex:1;border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px;font-size:13px}
+.ar{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin-top:10px}.ar header{display:flex;justify-content:space-between;align-items:baseline}.ar b{font-weight:500}.ar .pc{font:400 28px var(--serif)}
+.big2{background:var(--ink);color:#FAF8F4;border-radius:24px;padding:18px 20px;margin:6px 0 4px}.big2 small{opacity:.6;font-size:12px;text-transform:uppercase;letter-spacing:.06em}.big2 b{display:block;font:400 48px/1.1 var(--serif)}
+.cal{display:flex;gap:14px;align-items:center;border-top:1px solid var(--line);padding:12px 0}.cal .dy{width:46px;text-align:center;font:400 28px/1 var(--serif)}.cal .dy small{display:block;font:11px var(--sans);color:var(--sub);text-transform:uppercase}
+.bell{background:none;border:1px solid var(--line);border-radius:50%;width:34px;height:34px;display:grid;place-items:center;color:var(--sub)}.bell.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.kp{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kp div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}.kp b{font:400 34px/1 var(--serif);display:block}.kp small{color:var(--sub);font-size:12px}
+.bars div{margin:0 0 10px;font-size:13px}.bars i{display:block;height:8px;border-radius:9px;background:var(--acc);margin-top:5px}
+.gap{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:11px 0;font-size:14px}
+.sh{position:absolute;inset:0;z-index:20;display:none}.sh.on{display:block}.sh .bd{position:absolute;inset:0;background:rgba(22,20,15,.35);animation:fi .2s}
+.pn{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-radius:28px 28px 0 0;padding:10px 22px calc(26px + env(safe-area-inset-bottom,0px));animation:sl .3s cubic-bezier(.2,.8,.2,1);max-height:88%;overflow:auto}
+@keyframes sl{from{transform:translateY(100%)}}@keyframes fi{from{opacity:0}}
+.gr{width:38px;height:4px;border-radius:9px;background:var(--line);margin:0 auto 14px}
+.pn h3{font:400 28px/1.1 var(--serif);margin:0 0 6px}.pn p{color:var(--sub);margin:0 0 14px;font-size:13.5px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;font-size:14.5px;line-height:1.6}mark{background:#FFE2D9;color:inherit;padding:1px 3px;border-radius:4px}
+.btn{width:100%;border:0;background:var(--ink);color:#fff;border-radius:99px;padding:14px;margin-top:12px;font-weight:500}.btn.g{background:var(--sf);color:var(--ink)}
+.pn select{width:100%;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;font:inherit;margin-bottom:10px}
+.tg{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14.5px}
+#toast{position:absolute;left:50%;bottom:90px;transform:translate(-50%,16px);background:var(--ink);color:#fff;font-size:13px;padding:9px 16px;border-radius:99px;opacity:0;transition:.25s;pointer-events:none;z-index:30;white-space:nowrap}#toast.s{opacity:1;transform:translate(-50%,0)}
+</style></head>
+<body class="dev"><div id="app"><div id="stage">
+<section class="scr on" id="s-home"><div class="bar"><div class="brand"><i></i>Ask YMCA</div><button class="av" id="av"></button></div><div class="in" id="hm"></div></section>
+<section class="scr" id="s-ask"><div class="bar"><div class="brand"><i></i>Ask</div><button class="ib" data-new aria-label="New chat" id="nw"></button></div><div class="in" id="feed"></div>
+<form class="cmp" id="f"><input id="q" placeholder="Ask about YMCA…" autocomplete="off" enterkeyhint="send"><button class="go" aria-label="Send">↑</button></form></section>
+<section class="scr" id="s-pap"><div class="bar"><div class="brand"><i></i>Papers</div></div><div class="in"><h2>Previous year papers</h2><input class="srch" id="ps" placeholder="Search your subjects…"><div class="fl" id="pf1"></div><div class="fl" id="pf2"></div><div id="pl"></div></div></section>
+<section class="scr" id="s-not"><div class="bar"><div class="brand"><i></i>Notices</div></div><div class="in"><h2>What's new</h2><div class="fl" id="nf"></div><div id="nl"></div></div></section>
+<div id="px"><div class="ph"><button class="ib" data-back aria-label="Back" id="bk"></button><span id="pxh"></span></div><div class="in" id="pxb"></div></div>
+</div><nav id="tabs"></nav>
+<div class="sh" id="sh"><div class="bd"></div><div class="pn"><div class="gr"></div><div id="shc"></div></div></div><div id="toast"></div></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const IC={bell:"M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 20a2 2 0 0 0 4 0",file:"M7 3h7l5 5v13H7zM14 3v5h5",steps:"M5 12l4 4 10-10",gauge:"M4 17a8 8 0 0 1 16 0M12 17l4-5",user:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M4 21a8 8 0 0 1 16 0",cal:"M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",home:"M3 11l9-8 9 8M5 10v10h14V10",chat:"M4 5h16v11H9l-5 4z",back:"M15 5l-7 7 7 7",plus:"M12 5v14M5 12h14",chev:"M9 5l7 7-7 7"};
+const I=(n,s=22)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${IC[n]}"/></svg>`;
+const BRN={CSE:"B.Tech CSE",ECE:"B.Tech ECE",ME:"B.Tech Mechanical"};
+const CUR={CSE:{3:"Data Structures:DSA|Discrete Mathematics:DM|Digital Electronics:DE|Object Oriented Programming:OOP",4:"Database Management Systems:DBMS|Operating Systems:OS|Computer Networks:CN|Design & Analysis of Algorithms:DAA",5:"Software Engineering:SE|Compiler Design:CD|Machine Learning:ML|Web Technologies:WT"},
+ECE:{3:"Signals & Systems:SS|Analog Electronics:AE|Network Analysis:NA|Digital Logic:DL",4:"Digital Signal Processing:DSP|Microprocessors:MP|Communication Systems:CS|Electromagnetic Theory:EMT",5:"VLSI Design:VLSI|Control Systems:CTRL|Embedded Systems:ES|Antennas & Propagation:AP"},
+ME:{3:"Thermodynamics:TD|Fluid Mechanics:FM|Strength of Materials:SOM|Manufacturing Processes:MFG",4:"Heat Transfer:HT|Kinematics of Machines:KOM|Machine Design:MD|Metrology:MET",5:"IC Engines:ICE|Dynamics of Machines:DOM|Fluid Machinery:FMC|Industrial Engineering:IE"}};
+const St={name:"Aarav",br:"CSE",sem:4,saved:new Set(),read:new Set(),rem:new Set(),prog:{},att:[[34,29],[30,22],[28,23],[31,21]],last:null,live:[],fb:0,P:{s:"all",y:"all",sv:0,q:""},N:"All"};
+const subs=()=>CUR[St.br][St.sem].split("|").map((x,i)=>{const[n,a]=x.split(":");return{i,n,a}});
+const T0=new Date();T0.setHours(0,0,0,0);
+const fd=n=>{const d=new Date(T0);d.setDate(d.getDate()+n);return d.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}).replace(",","")},dl=n=>n==0?"Today":n==1?"Tomorrow":"in "+n+" days",ago=n=>n==0?"Today":n==-1?"Yesterday":-n+" days ago";
+const EXM=()=>subs().map((s,i)=>({...s,o:9+2*i,t:i%2?"2:00 PM":"10:00 AM",h:"Hall "+"ABC"[i%3]}));
+const DOT={Exams:"#E4472B",Fees:"#D9A21B",Forms:"#2F7D5B",Placements:"#3B6FD4",Results:"#9A9488"};
+const CAL=()=>[{o:4,k:"Forms",t:"Exam form last date"},{o:6,k:"Placements",t:"Placement registration closes"},{o:7,k:"Fees",t:"Semester fee last date"},...EXM().map(e=>({o:e.o,k:"Exams",t:e.n+" exam",x:e.t+" · "+e.h})),{o:26,k:"Results",t:"Results expected (tentative)"}].sort((a,b)=>a.o-b.o);
+const DOCS={att:["Ordinance 12.3 · Attendance",fd(-60),"A student must have <mark>at least 75% attendance</mark> in each subject to be eligible for the end-semester examination. The Dean may condone a shortage of up to <mark>5%</mark> on medical or sports grounds."],
+ree:["Exam Rules §7 · Re-evaluation",fd(-40),"Applications for re-evaluation must be submitted <mark>within 15 days</mark> of declaration of result, with the prescribed fee per paper."],
+hos:["Hostel Rules · §4",fd(-90),"The hostel gate shall close at <mark>10:00 PM</mark>. Late entry requires prior written permission of the Warden."],
+lib:["Library Rules",fd(-80),"The central library is open <mark>8:30 AM to 8:00 PM</mark> on working days. A student may borrow up to <mark>4 books</mark> for 14 days."],
+fee:["Notice · Fee payment extension",fd(-3),`The last date for payment of semester fee is extended to <mark>${fd(7)}</mark>. A late fine applies thereafter.`],
+dsh:["Notice · End-sem datesheet",fd(-1),`End-semester examinations commence from <mark>${fd(9)}</mark>. Report <mark>30 minutes</mark> before the exam.`]};
+const NOT=[{id:"n1",c:"Exams",t:"End-semester datesheet released",d:-1,s:`Exams start on ${fd(9)}. Reach the hall 30 minutes early and carry your ID card and admit card.`,f:[["Exams begin",fd(9)],["Reporting time","30 minutes before"],["Carry","ID card, admit card"]],n:"dsh"},
+{id:"n2",c:"Library",t:"Library open till 10 PM during exams",d:-2,s:"The central library will stay open late from next week so students can study before exams.",f:[["Extended hours","8:30 AM to 10:00 PM"],["From",fd(5)]],n:"lib"},
+{id:"n3",c:"Fees",t:"Fee payment last date extended",d:-3,s:`You now have until ${fd(7)} to pay the semester fee. After that a late fine applies.`,f:[["New last date",fd(7)],["After that","Late fine applies"],["Pay at","Accounts Office or portal"]],n:"fee"},
+{id:"n4",c:"Placements",t:"Campus drive: registrations open",d:-5,s:"Final-year students can register for the upcoming campus drive on the T&P portal. Keep your resume updated.",f:[["Eligible","Final-year students"],["Register on","T&P portal"],["Closes",fd(6)]]},
+{id:"n5",c:"Hostel",t:"Hostel allotment list, Phase 2",d:-8,s:"The second allotment list is out. Check your name on the notice board and report to the Warden within 3 days.",f:[["Report within","3 days"],["Where","Warden's office"]]}];
+const PR=[{id:"bon",t:"Bonafide certificate",tm:"2 working days",fee:"₹50",of:"stu",docs:["ID card","Signed application"],st:["Download the bonafide form from the student portal","Get it signed by your class coordinator","Submit it at the Student Section with your ID card","Collect the certificate after 2 working days"],kw:/bonafide|certificate/},
+{id:"ree",t:"Re-evaluation of answer sheet",tm:"About 3 weeks",fee:"₹500 per paper",of:"exam",docs:["Result card","Fee receipt"],st:["Check your result on the student portal","Apply online within 15 days of the result","Pay the per-paper fee at Accounts","Track the status; revised result comes in about 3 weeks"],kw:/re-?eval|recheck|revaluat/,doc:"ree"},
+{id:"idc",t:"Replace a lost ID card",tm:"5 working days",fee:"₹200",of:"stu",docs:["Written application","2 passport photos","Fee receipt"],st:["Inform the Student Section about the loss","Submit the application with 2 photos","Pay the replacement fee at Accounts","Collect the new card after 5 working days"],kw:/id card|lost card/},
+{id:"bkl",t:"Backlog exam form",tm:"Same day",fee:"Per paper",of:"exam",docs:["Previous marksheet","Fee receipt"],st:["Open the exam form on the student portal","Select the backlog papers you will reappear in","Pay the exam fee","Print the form and submit it to the Exam Branch"],kw:/backlog|back paper|exam form|reappear/},
+{id:"sch",t:"Apply for a scholarship",tm:"4 to 6 weeks",fee:"Free",of:"acc",docs:["Income certificate","Last marksheet","Bank passbook","Aadhaar"],st:["Check eligibility on the scholarship notice","Upload documents on the portal","Get documents verified at the Accounts Office","Track the status on the portal"],kw:/scholar/},
+{id:"hrc",t:"Change hostel room",tm:"3 working days",fee:"Free",of:"hos",docs:["Written request"],st:["Write a request stating the reason","Get it signed by your current roommate","Submit it to the Warden","Move after approval"],kw:/room change|change room/}];
+const CT=[{id:"exam",n:"Examination Branch",r:"Room 104, Admin Block",d:"wk",o:10,c:16,tg:"datesheet, re-evaluation, results, admit card, backlog",x:"104"},
+{id:"acc",n:"Accounts Office",r:"Room 102, Admin Block",d:"wk",o:10,c:16,tg:"fees, fine, receipt, refund, scholarship",x:"102"},
+{id:"stu",n:"Student Section",r:"Room 108, Admin Block",d:"wk",o:10,c:16,tg:"bonafide, ID card, certificate, NOC, transcript",x:"108"},
+{id:"hos",n:"Hostel Warden",r:"Hostel Block A office",d:"all",o:9,c:18,tg:"hostel, room, mess, late entry",x:"220"},
+{id:"tnp",n:"Training & Placement Cell",r:"Room 12, Academic Block",d:"wk",o:10,c:17,tg:"placement, internship, company, drive",x:"112"},
+{id:"lib",n:"Central Library",r:"Library Building",d:"wk",o:8.5,c:20,tg:"books, issue, return, reading room",x:"150"},
+{id:"can",n:"Canteen",r:"Near Main Gate",d:"all",o:8,c:18,tg:"food, canteen, snacks",x:"—"},
+{id:"hod",n:"HOD's Office",r:"Department, 2nd floor",d:"wk",o:10,c:16,tg:"department, syllabus, lab, project, faculty",x:"131"}];
+const isOpen=c=>{const n=new Date(),h=n.getHours()+n.getMinutes()/60,w=n.getDay();return(c.d=="all"||(w>0&&w<6))&&h>=c.o&&h<c.c},hrs=c=>`${c.d=="all"?"Every day":"Mon–Fri"} · ${Math.floor(c.o)}:${c.o%1?"30":"00"} to ${c.c}:00`;
+const POL=[["att",/attend|hazri/,"Attendance","You need <b>75% attendance</b> in each subject to sit the end-sem exam. The Dean can condone up to 5% for medical or sports reasons.","Attend at least 3 of every 4 classes. If you fall short because of illness or sports, apply with proof. A small relaxation is possible but not guaranteed.","हर विषय में कम से कम 75% उपस्थिति ज़रूरी है। बीमारी या खेल के कारण 5% तक छूट मिल सकती है, पर इसके लिए प्रमाण देना होगा।"],
+["hos",/hostel|warden|late entry/,"Hostel & campus","The hostel gate closes at <b>10:00 PM</b>. For late entry, get written permission from the Warden beforehand.","Be inside by 10 PM, or get the Warden's written permission before you go out.","हॉस्टल का गेट रात 10 बजे बंद होता है। देर से आने के लिए वार्डन की लिखित अनुमति पहले लें।"],
+["lib",/library|book issue/,"Hostel & campus","The central library is open <b>8:30 AM to 8:00 PM</b> on working days. You can borrow 4 books for 14 days.","Open 8:30 to 8:00 on working days. Four books at a time, for two weeks.","लाइब्रेरी कार्य-दिवसों में सुबह 8:30 से शाम 8 बजे तक खुली रहती है। 4 किताबें 14 दिन के लिए मिलती हैं।"]];
+const paps=()=>subs().flatMap(s=>[2025,2024,2023].map(y=>({id:`${St.br}${St.sem}-${s.i}-${y}-End-sem`,s,y,ty:"End-sem"})).concat([{id:`${St.br}${St.sem}-${s.i}-2025-Mid-sem`,s,y:2025,ty:"Mid-sem"}]));
+const pt=p=>`${p.s.n} · ${p.y}`,pm=p=>`${p.ty} · ${BRN[St.br]} · Sem ${St.sem}`;
+const row=(ic,t,s,at,rt)=>`<div class="row" ${at}><div class="ic">${ic}</div><div class="tx"><b>${t}</b><small>${s}</small></div>${rt||`<span class="cv">${I("chev",16)}</span>`}</div>`;
+const prow=p=>row("PDF",pt(p),pm(p),`data-p="${p.id}"`,`<button class="st ${St.saved.has(p.id)?"on":""}" data-star="${p.id}">${St.saved.has(p.id)?"★":"☆"}</button>`);
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("s");setTimeout(()=>t.classList.remove("s"),1700)};
+const sheet=h=>{$("#shc").innerHTML=h;$("#sh").classList.add("on")},shut=()=>$("#sh").classList.remove("on");$("#sh .bd").onclick=shut;
+/* ---------- navigation ---------- */
+let stack=[],hs=0;
+function tab(t){stack=[];draw();$$(".scr").forEach(s=>s.classList.toggle("on",s.id=="s-"+t));$$(".tb").forEach(b=>b.classList.toggle("on",b.dataset.t==t));if(t=="home")home();if(t=="not")notices();if(t=="pap")papers()}
+function push(n,a){shut();stack.push([n,a]);draw();try{history.pushState(1,"");hs++}catch(e){}}
+function back(){if(hs){history.back()}else pop()}
+function pop(){stack.pop();draw();home();notices()}
+window.onpopstate=()=>{if(hs>0)hs--;if(stack.length)pop()};
+function draw(keep){const s=stack[stack.length-1],p=$("#px"),b=$("#pxb"),y=b.scrollTop;p.classList.toggle("on",!!s);if(s){const r=V[s[0]](s[1]);$("#pxh").textContent=r.t;b.innerHTML=r.h;b.scrollTop=keep?y:0}}
+function go(a){const[k,v]=a.split(":");k=="tab"?tab(v):push(v,arguments[1])}
+/* ---------- screens ---------- */
+const V={
+notice(id){const n=NOT.find(x=>x.id==id);St.read.add(id);return{t:n.c,h:`<p class="meta">${ago(n.d)}</p><h2>${n.t}</h2><div class="card2"><em>In simple words · AI summary</em><p>${n.s}</p></div><p class="lab">Key facts</p>${n.f.map(([a,b])=>`<div class="kv"><span>${a}</span><b>${b}</b></div>`).join("")}${n.n?`<button class="sc big" data-src="${n.n}"><b>↗</b>Source: ${DOCS[n.n][0]}</button>`:""}<button class="btn" data-ask="Tell me more about: ${n.t}">Ask about this notice</button><button class="btn g" data-dl>Open original PDF</button>`}},
+proc(){return{t:"How do I…",h:`<h2>Step-by-step guides</h2><p class="meta" style="margin:0 0 10px">The processes students ask about most, with documents, fees and the right office.</p>${PR.map(p=>row(I("steps",20),p.t,`${p.st.length} steps · ${p.tm}`,`data-proc="${p.id}"`)).join("")}`}},
+procd(id){const p=PR.find(x=>x.id==id),c=CT.find(x=>x.id==p.of),d=St.prog[id]||[];return{t:"Guide",h:`<h2>${p.t}</h2><div class="stat"><div><small>Time</small><b>${p.tm}</b></div><div><small>Fee</small><b>${p.fee}</b></div><div><small>Office</small><b>${c.n.replace(" Office","")}</b></div></div>
+<p class="lab">Documents needed</p><div class="tags">${p.docs.map(x=>`<span class="tag">${x}</span>`).join("")}</div>
+<p class="lab">${d.length} of ${p.st.length} done</p><div class="pb"><i style="width:${d.length/p.st.length*100}%"></i></div>${p.st.map((s,i)=>`<button class="stp ${d.includes(i)?"dn":""}" data-step="${id}:${i}"><span class="ck">${d.includes(i)?I("steps",14):i+1}</span><span>${s}</span></button>`).join("")}
+${p.doc?`<button class="sc big" data-src="${p.doc}"><b>↗</b>Rule: ${DOCS[p.doc][0]}</button>`:""}<button class="btn" data-ct="${c.id}">Contact ${c.n}</button><button class="btn g" data-ask="I have a question about: ${p.t}">Ask a question about this</button><p class="foot">Sample fees and steps for the demo.</p>`}},
+att(){const T=.75,cl=([h,a])=>a/h>=T?{p:a/h*100,ok:1,n:Math.floor(a/T-h+1e-9)}:{p:a/h*100,ok:0,n:Math.ceil((T*h-a)/(1-T)-1e-9)},H=St.att.reduce((x,y)=>x+y[0],0),A=St.att.reduce((x,y)=>x+y[1],0),o=cl([H,A]);
+return{t:"Attendance",h:`<h2>Can I skip today?</h2><div class="big2"><small>Overall · minimum 75%</small><b>${o.p.toFixed(1)}%</b><small style="opacity:.8;text-transform:none;font-size:13px">${o.ok?"You are above the limit overall":"Overall below 75%"}. Eligibility is checked per subject.</small></div>
+${subs().map((s,i)=>{const r=cl(St.att[i]),[h,a]=St.att[i];return`<div class="ar"><header><b>${s.n}</b><span class="pc" style="color:${r.ok?"var(--ok)":"var(--acc)"}">${Math.round(r.p)}%</span></header><div class="pb"><i class="${r.ok?"":"no"}" style="width:${r.p}%"></i><u></u></div><small style="color:var(--sub)">${a} of ${h} classes · ${r.ok?(r.n?`Safe to miss <b>${r.n}</b> more`:"Right on the line. Don't miss the next one"):`Attend the next <b>${r.n}</b> in a row`}</small><div class="ac2"><button data-att="${i}:a">Attended next class</button><button data-att="${i}:m">Missed next class</button></div></div>`}).join("")}
+<button class="sc big" data-src="att"><b>↗</b>Rule: ${DOCS.att[0]}</button><button class="btn g" data-reset>Reset demo numbers</button><p class="foot">Tap the buttons to see how each class changes your number.</p>`}},
+ct(){return{t:"Contacts",h:`<h2>Who do I ask?</h2><input class="srch" id="cs" placeholder="Try: fee, hostel, bonafide, datesheet…"><div id="cl">${ctl("")}</div>`}},
+cal(){const L=CAL(),g=[["This week",o=>o<7],["Next week",o=>o>=7&&o<14],["Later",o=>o>=14]];return{t:"Calendar",h:`<h2>Deadlines & exams</h2><p class="meta" style="margin:0 0 6px">Tap the bell to get a reminder before it.</p>${g.map(([n,f])=>{const l=L.filter(e=>f(e.o));return l.length?`<p class="lab">${n}</p>`+l.map(e=>{const d=new Date(T0);d.setDate(d.getDate()+e.o);return`<div class="cal"><div class="dy">${d.getDate()}<small>${d.toLocaleDateString("en-GB",{month:"short"})}</small></div><div class="tx"><b>${e.t}</b><small><i style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${DOT[e.k]};margin-right:5px"></i>${e.k}${e.x?" · "+e.x:""} · ${dl(e.o)}</small></div><button class="bell ${St.rem.has(e.t)?"on":""}" data-rem="${e.t}">${I("bell",17)}</button></div>`}).join(""):""}).join("")}`}},
+ins(){const n=St.live.length;return{t:"Admin preview",h:`<h2>This week at YMCA</h2><div class="kp"><div><b>${1284+n}</b><small>questions</small></div><div><b>91%</b><small>answered without staff</small></div><div><b>2.1s</b><small>median answer time</small></div><div><b>${St.fb}</b><small>feedback this session</small></div></div><p class="lab">What students ask</p><div class="bars">${[["Exam dates & datesheet",34],["Previous year papers",27],["Fees & deadlines",15],["Attendance & rules",12],["Hostel & campus",8]].map(([t,v])=>`<div>${t}<span style="float:right;color:var(--sub)">${v}%</span><i style="width:${v*2.6}%"></i></div>`).join("")}</div><p class="lab">Gaps: asked, but no document found</p><div class="gap">Hostel mess menu<button class="ac" data-add>Add document</button></div><div class="gap">Minor degree rules<button class="ac" data-add>Add document</button></div><p class="lab">Live from this session</p>${n?St.live.slice().reverse().map(x=>`<div class="gap"><span>${x[0]}</span><span style="color:var(--sub);font-size:12px">${x[1]}</span></div>`).join(""):'<p class="meta">Ask something in the Ask tab and it appears here.</p>'}<p class="foot">Sample numbers. Real data comes from actual usage.</p>`}}};
+function ctl(q){q=q.toLowerCase();const l=CT.filter(c=>(c.n+" "+c.tg).toLowerCase().includes(q));return l.length?l.map(c=>row(c.n.split(" ").map(w=>w[0]).join("").slice(0,2),c.n,`${c.r} · <span style="color:${isOpen(c)?"var(--ok)":"var(--sub)"}">${isOpen(c)?"Open now":"Closed now"}</span>`,`data-ct="${c.id}"`)).join(""):'<p class="meta">No match. Try the Ask tab.</p>'}
+function home(){const h=new Date().getHours(),u=NOT.filter(n=>!St.read.has(n.id)).length;$("#hm").innerHTML=`<h1>${h<12?"Good morning":h<17?"Good afternoon":"Good evening"},<br><em>${St.name}.</em></h1><button class="askbar" data-go="tab:ask">${I("chat",18)}<span>Ask about notices, papers, rules…</span></button>
+<p class="lab">Coming up</p>${CAL().slice(0,3).map(e=>`<div class="cu" data-go="push:cal"><i style="background:${DOT[e.k]}"></i><div class="tx"><b>${e.t}</b><small>${fd(e.o)}</small></div><span class="dd">${dl(e.o)}</span></div>`).join("")}
+<p class="lab">Student services</p><div class="gd">${[["bell","Notices",u?u+" unread":"All read","tab:not"],["file","Papers","Previous years","tab:pap"],["steps","How do I…","Step-by-step guides","push:proc"],["gauge","Attendance","Safe-to-skip tracker","push:att"],["user","Contacts","Who to ask","push:ct"],["cal","Calendar","Deadlines & exams","push:cal"]].map(([i,t,s,a])=>`<button class="tl" data-go="${a}"><span class="ti">${I(i)}</span><b>${t}</b><small>${s}</small></button>`).join("")}</div>
+<p class="lab">Open right now</p><div class="fl">${["lib","acc","exam","can"].map(id=>{const c=CT.find(x=>x.id==id);return`<button data-ct="${id}"><i class="od ${isOpen(c)?"y":""}"></i>${c.n}</button>`}).join("")}</div><p class="foot">Demo with sample data. Not official YMCA information.</p>`;$("#av").textContent=St.name[0]}
+function chips(el,l,cur,k){$(el).innerHTML=l.map(([v,t])=>`<button class="${cur==v?"on":""}" data-f="${k}" data-v="${v}">${t}</button>`).join("")}
+function papers(){const P=St.P;chips("#pf1",[["all","All subjects"],...subs().map(s=>[s.i,s.a])],P.s,"s");chips("#pf2",[["all","Any year"],[2025,"2025"],[2024,"2024"],[2023,"2023"],["sv","★ Saved"]],P.sv?"sv":P.y,"y");
+const l=paps().filter(p=>(P.s=="all"||p.s.i==P.s)&&(P.y=="all"||p.y==P.y)&&(!P.sv||St.saved.has(p.id))&&(p.s.n+p.s.a).toLowerCase().includes(P.q));$("#pl").innerHTML=l.length?l.map(prow).join(""):'<p class="meta" style="margin-top:16px">No papers match this filter.</p>'}
+function notices(){chips("#nf",["All","Exams","Fees","Placements","Library","Hostel"].map(x=>[x,x]),St.N,"n");$("#nl").innerHTML=NOT.filter(n=>St.N=="All"||n.c==St.N).map(n=>row(n.d==0?"•":ago(n.d).split(" ")[0].replace("Yesterday","1")+"d",n.t,`${n.c} · ${ago(n.d)}`,`data-n="${n.id}"`,St.read.has(n.id)?"":'<i style="width:8px;height:8px;border-radius:50%;background:var(--acc);flex:none"></i>')).join("")}
+/* ---------- assistant ---------- */
+function reply(q){const s=q.toLowerCase(),sb=subs(),k=sb.find(x=>new RegExp("\\b"+x.a.toLowerCase()+"\\b").test(s)||s.includes(x.n.toLowerCase())),yr=(s.match(/20(23|24|25)/)||[])[0];
+if(/essay|poem|homework|joke|write (a|me)|code for|movie|cricket/.test(s))return{text:"That's outside what I can help with. I only cover YMCA notices, papers, rules and campus info.",warn:1,route:"Scope guard → refused before any model call",tok:0,tp:"Off-topic (blocked)"};
+if(/who|contact|office|phone|kisse|kahan/.test(s)){const c=CT.find(c=>c.tg.split(", ").some(w=>w.length>3&&s.includes(w.toLowerCase())));if(c)return{text:`For this, go to the <b>${c.n}</b> (${c.r}). ${isOpen(c)?"They are open right now.":"They are closed right now."}`,html:row(c.n.split(" ").map(w=>w[0]).join("").slice(0,2),c.n,hrs(c),`data-ct="${c.id}"`),route:"Directory → tag match",tok:0,tp:"Contacts"}}
+const pr=PR.find(p=>p.kw.test(s));if(pr)return{text:`<b>${pr.t}</b> takes ${pr.st.length} steps and about ${pr.tm.toLowerCase()}. Fee: ${pr.fee}. Start with: ${pr.st[0].toLowerCase()}.`,html:row(I("steps",20),"View step-by-step guide",`Documents, fee and office included`,`data-proc="${pr.id}"`),src:pr.doc?[pr.doc]:null,route:"Procedure → guide lookup",x:"structured data, no retrieval",tok:380,tp:"Procedures"};
+const fu=/^\s*(and\s+)?20(23|24|25)\??\s*$/.test(s)&&St.last;
+if(/paper|pyq|previous|question paper/.test(s)||fu){const kk=k||St.last;if(!kk)return{text:`Which subject? Try “${sb[0].a} papers” or “${sb[1].n} 2024”.`,route:"Paper lookup → missing subject",tok:0,tp:"Papers"};St.last=kk;const l=paps().filter(p=>p.s.i==kk.i&&(!yr||p.y==yr)&&p.ty=="End-sem");return{text:`Here are the ${kk.n} papers for ${BRN[St.br]}, Sem ${St.sem}.`,html:l.map(prow).join(""),acts:[["Show 2023","2023"],["All papers","#tab:pap"]],route:"Paper lookup → database query",x:`filters: ${kk.a}, sem ${St.sem}${yr?", "+yr:""}`,tok:0,tp:"Papers"}}
+if(/exam|datesheet|date sheet|kab hai/.test(s)&&!/notice|circular|attend|result|form/.test(s)){const E=EXM();if(k){const e=E[k.i];return{text:`Your <b>${k.n}</b> exam is on <b>${fd(e.o)}</b> at ${e.t}, ${e.h}. Reach 30 minutes early with your ID card.`,src:["dsh"],acts:[[`${k.a} papers`,k.a+" papers"],["Calendar","#push:cal"]],route:"Datesheet → structured lookup",tok:420,tp:"Exam dates"}}
+return{text:"Here is your datesheet.",html:E.map(e=>row(fd(e.o).split(" ")[1],e.n,`${fd(e.o)} · ${e.t} · ${e.h}`,"")).join(""),src:["dsh"],route:"Datesheet → structured lookup",tok:0,tp:"Exam dates"}}
+if(/notice|circular|latest|what'?s new/.test(s)){const c=["Exams","Fees","Placements","Library","Hostel"].find(x=>s.includes(x.toLowerCase().slice(0,4)));return{text:"The latest notices:",html:NOT.filter(n=>!c||n.c==c).slice(0,4).map(n=>row(I("bell",18),n.t,`${n.c} · ${ago(n.d)}`,`data-n="${n.id}"`)).join(""),route:"Latest notices → database fetch",tok:0,tp:"Notices"}}
+if(/fee|last date|deadline/.test(s))return{text:`The last date to pay the semester fee is <b>${fd(7)}</b>. A late fine applies after that. The exam form closes on ${fd(4)}.`,src:["fee"],acts:[["All deadlines","#push:cal"]],route:"Deadline → newest-notice rule",x:"newer notice overrides older circular",tok:610,tp:"Fees & deadlines"};
+for(const p of POL)if(p[1].test(s))return{text:p[3],src:[p[0]],acts:[["Explain simply","@s:"+p[0]],["हिंदी में","@h:"+p[0]],...(p[0]=="att"?[["Attendance tracker","#push:att"]]:[])],route:"Policy → hybrid search",x:"20 candidates → rerank → top 3",tok:1800,tp:p[2]};
+return{text:"I couldn't find a reliable answer, and I don't want to guess. A person at the right office can help.",warn:1,acts:[["Find the right office","#push:ct"]],route:"Low confidence → escalate",x:"logged as a gap for admin",tok:900,tp:"Unanswered"}}
+function stream(el,h,done){const w=h.split(" ");let i=0;const t=setInterval(()=>{i++;el.innerHTML=w.slice(0,i).join(" ");$("#feed").scrollTop=1e5;if(i>=w.length){clearInterval(t);done&&done()}},24)}
+const ex=r=>(r.html||"")+(r.src?`<div class="srcs">${r.src.map((x,i)=>`<button class="sc" data-src="${x}"><b>${i+1}</b>${DOCS[x][0]}</button>`).join("")}</div>`:"")+(r.acts?`<div class="acts">${r.acts.map(a=>{const v=a[1];return`<button class="ac" ${v[0]=="@"?`data-a="${v.slice(1)}"`:v[0]=="#"?`data-go="${v.slice(1)}"`:`data-q="${v}"`}>${a[0]}</button>`}).join("")}</div>`:"")+`<div class="fb">Helpful? <button data-fb>Yes</button><button data-fb>No</button></div><div class="uh">route: ${r.route}<br>${r.x?r.x+"<br>":""}model tokens: ${r.tok?"≈"+r.tok:"0"}</div>`;
+function hero(){$("#feed").innerHTML=`<div id="ah"><h1>How can I<br><em>help?</em></h1><p class="meta" style="margin:0 0 18px">Ask in English or Hinglish. Every answer shows its source.</p>${["Who do I contact for re-evaluation?","How do I get a bonafide certificate?","Kitni attendance chahiye?",subs()[0].a+" previous year papers"].map(x=>`<button class="sg" data-q="${x}">${x}<u>↗</u></button>`).join("")}</div>`;St.last=null}
+function say(q){q=q.trim();if(!q)return;tab("ask");$("#ah")&&$("#ah").remove();const f=$("#feed");f.insertAdjacentHTML("beforeend",`<div class="m u">${q.replace(/</g,"&lt;")}</div><div class="m b" id="cur"><div class="dots"><s></s><s></s><s></s></div></div>`);f.scrollTop=1e5;
+const r=reply(q);St.live.push([q.length>34?q.slice(0,32)+"…":q,r.tp]);const m=$("#cur");m.removeAttribute("id");setTimeout(()=>{m.innerHTML=`<div class="t${r.warn?" warn":""}"></div>`;stream($(".t",m),r.text,()=>{m.insertAdjacentHTML("beforeend",ex(r));f.scrollTop=1e5})},r.tok?850:500)}
+$("#f").onsubmit=e=>{e.preventDefault();say($("#q").value);$("#q").value=""};
+/* ---------- sheets ---------- */
+function profile(){sheet(`<h3>${St.name}</h3><p>Everything in the app is filtered to this profile.</p><select id="pb">${Object.keys(BRN).map(x=>`<option value="${x}" ${x==St.br?"selected":""}>${BRN[x]}</option>`).join("")}</select><select id="ps2">${[3,4,5].map(x=>`<option value="${x}" ${x==St.sem?"selected":""}>Semester ${x}</option>`).join("")}</select><div class="tg"><span>Show how answers are made</span><button class="ac" id="dv">${document.body.classList.contains("dev")?"On":"Off"}</button></div><button class="btn g" data-go="push:ins">Admin dashboard (preview)</button><button class="btn" data-x>Done</button>`)}
+function ctSheet(id){const c=CT.find(x=>x.id==id),o=isOpen(c);sheet(`<h3>${c.n}</h3><p>${c.r} · ${hrs(c)} · <b style="color:${o?"var(--ok)":"var(--sub)"}">${o?"Open now":"Closed now"}</b></p><p class="lab" style="margin:0 0 8px">Ask here about</p><div class="tags">${c.tg.split(", ").map(x=>`<span class="tag">${x}</span>`).join("")}</div><button class="btn" data-dl="Demo: would call ext. ${c.x}">Call · ext. ${c.x}</button><button class="btn g" data-dl="Demo: would open an email draft">Email</button>`)}
+function pv(id){const p=paps().find(x=>x.id==id);sheet(`<h3>${pt(p)}</h3><p>${pm(p)} · 3 hours · 70 marks</p><div class="q">Section A: 10 short-answer questions.<br>Section B: attempt any 4 of 6 long questions.<br>Includes a case-study question.</div><button class="btn" data-dl>Open PDF</button><button class="btn g" data-star="${id}" data-x>${St.saved.has(id)?"Remove from saved":"Save for later"}</button>`)}
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{const g=a=>e.target.closest(a);let t;
+if(t=g("[data-star]")){const id=t.dataset.star;St.saved.has(id)?St.saved.delete(id):St.saved.add(id);toast(St.saved.has(id)?"Saved":"Removed");papers();$$("#feed [data-star]").forEach(b=>{const o=St.saved.has(b.dataset.star);b.textContent=o?"★":"☆";b.classList.toggle("on",o)});if(t.dataset.x!=null)shut();return}
+if(g("[data-back]"))return back();
+if(g("[data-new]"))return hero();
+if(t=g("[data-go]"))return go(t.dataset.go);
+if(t=g("[data-src]")){const d=DOCS[t.dataset.src];return sheet(`<p class="lab" style="margin:0">Source · updated ${d[1]}</p><h3>${d[0]}</h3><p>Passage this answer is based on</p><div class="q">${d[2]}</div><button class="btn" data-dl>Open full document</button>`)}
+if(t=g("[data-q]"))return say(t.dataset.q);
+if(t=g("[data-ask]")){stack=[];draw();return say(t.dataset.ask)}
+if(t=g("[data-a]")){const[m,k]=t.dataset.a.split(":"),p=POL.find(x=>x[0]==k);t.remove();$("#feed").insertAdjacentHTML("beforeend",`<div class="m b"><div class="t">${m=="h"?p[5]:p[4]}</div><div class="uh">route: rewrite → small model, no new retrieval<br>model tokens: ≈180</div></div>`);return $("#feed").scrollTop=1e5}
+if(t=g("[data-p]"))return pv(t.dataset.p);
+if(t=g("[data-n]"))return push("notice",t.dataset.n);
+if(t=g("[data-proc]"))return push("procd",t.dataset.proc);
+if(t=g("[data-ct]"))return ctSheet(t.dataset.ct);
+if(t=g("[data-step]")){const[id,i]=t.dataset.step.split(":"),d=St.prog[id]=St.prog[id]||[];d.includes(+i)?d.splice(d.indexOf(+i),1):d.push(+i);return draw(1)}
+if(t=g("[data-att]")){const[i,w]=t.dataset.att.split(":"),a=St.att[i];a[0]++;if(w=="a")a[1]++;return draw(1)}
+if(g("[data-reset]")){St.att=[[34,29],[30,22],[28,23],[31,21]];return draw(1)}
+if(t=g("[data-rem]")){const k=t.dataset.rem;St.rem.has(k)?St.rem.delete(k):St.rem.add(k);toast(St.rem.has(k)?"Reminder set":"Reminder removed");return draw(1)}
+if(t=g("[data-f]")){const P=St.P,k=t.dataset.f,v=t.dataset.v;if(k=="s")P.s=v=="all"?"all":+v;else if(k=="y"){P.sv=v=="sv"?!P.sv:0;P.y=v=="sv"?P.y:(v=="all"?"all":+v)}else{St.N=v;return notices()}return papers()}
+if(t=g("[data-fb]")){St.fb++;t.parentElement.innerHTML="Thanks, logged for the admin team.";return}
+if(t=g("[data-dl]"))return toast(t.dataset.dl||"Demo: would open the real PDF");
+if(g("[data-add]"))return toast("Demo: admin uploads a document here");
+if(g("#av"))return profile();
+if(t=g("#dv")){document.body.classList.toggle("dev");t.textContent=document.body.classList.contains("dev")?"On":"Off";return}
+if(g("[data-x]"))shut()});
+document.addEventListener("change",e=>{if(e.target.id=="pb"||e.target.id=="ps2"){if(e.target.id=="pb")St.br=e.target.value;else St.sem=+e.target.value;St.P={s:"all",y:"all",sv:0,q:""};St.saved=new Set();St.att=[[34,29],[30,22],[28,23],[31,21]];home();papers();hero();toast(BRN[St.br]+" · Sem "+St.sem)}});
+document.addEventListener("input",e=>{if(e.target.id=="ps"){St.P.q=e.target.value.toLowerCase();papers()}if(e.target.id=="cs")$("#cl").innerHTML=ctl(e.target.value)});
+$("#tabs").innerHTML=[["home","Home","home"],["ask","Ask","chat"],["pap","Papers","file"],["not","Notices","bell"]].map(([t,l,i])=>`<button class="tb ${t=="home"?"on":""}" data-t="${t}" onclick="tab('${t}')">${I(i,23)}${l}</button>`).join("");
+$("#bk").innerHTML=I("back",18);$("#nw").innerHTML=I("plus",18);
+home();hero();papers();notices();
+</script></body></html>

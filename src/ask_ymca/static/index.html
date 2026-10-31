@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#faf8f4">
+    <title>Ask YMCA</title>
+    <style>
+      :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #201d18; background: #faf8f4; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 20px; }
+      main { width: min(100%, 720px); min-height: min(820px, calc(100vh - 40px)); display: flex; flex-direction: column; background: white; border: 1px solid #e9e4da; border-radius: 24px; box-shadow: 0 16px 50px #201d1812; overflow: hidden; }
+      header { padding: 22px 24px; border-bottom: 1px solid #e9e4da; }
+      .brand { margin: 0; font: italic 28px Georgia, serif; }
+      .brand span { color: #e4472b; }
+      #status { margin: 5px 0 0; color: #716c64; font-size: 13px; }
+      .toolbar { display: flex; justify-content: flex-end; padding: 8px 20px 0; }
+      .quiet { border: 1px solid #e9e4da; border-radius: 999px; background: white; padding: 7px 12px; color: #716c64; font-size: 12px; }
+      #admin { display: none; padding: 14px 20px; border-bottom: 1px solid #e9e4da; background: #faf8f4; }
+      #admin.open { display: block; }
+      #admin h2 { margin: 0 0 8px; font: 22px Georgia, serif; }
+      #admin p { margin: 6px 0 10px; font-size: 12px; }
+      .admin-controls { display: flex; gap: 8px; }
+      .admin-controls input { border-radius: 10px; padding: 9px 10px; }
+      .admin-controls button, .approve { border: 0; border-radius: 10px; padding: 9px 12px; color: white; background: #201d18; }
+      #admin-message { font-size: 12px; }
+      #review-list { max-height: 240px; overflow-y: auto; }
+      .review-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; border-top: 1px solid #e9e4da; padding: 10px 0; font-size: 12px; }
+      .review-actions { display: flex; align-items: flex-start; gap: 6px; }
+      .review-item small { display: block; margin-top: 4px; color: #716c64; }
+      .approve { background: #2f7d5b; }
+      .tentative { background: #80621b; }
+      .archive { background: #716c64; }
+      #feed { flex: 1; overflow-y: auto; padding: 22px 24px; }
+      .intro { max-width: 500px; padding: 12px 0; }
+      h1 { margin: 0 0 8px; font: 40px/1.05 Georgia, serif; font-weight: 400; }
+      .muted, .meta { color: #716c64; }
+      .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+      button { font: inherit; cursor: pointer; }
+      .suggestions button, .source { border: 1px solid #e9e4da; border-radius: 999px; background: #fff; padding: 9px 13px; text-align: left; }
+      .message { width: fit-content; max-width: 90%; margin: 15px 0; padding: 12px 15px; border-radius: 16px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .user { margin-left: auto; background: #201d18; color: white; border-bottom-right-radius: 5px; }
+      .assistant { background: #f5f2ec; border-bottom-left-radius: 5px; }
+      .sources { display: grid; gap: 8px; margin: -5px 0 16px 0; }
+      .source { border-radius: 12px; color: inherit; text-decoration: none; font-size: 13px; }
+      .source strong { display: block; margin-bottom: 3px; }
+      .source small { color: #716c64; }
+      form { display: flex; gap: 10px; padding: 16px 20px; border-top: 1px solid #e9e4da; }
+      input { flex: 1; min-width: 0; padding: 13px 15px; border: 1px solid #d8d1c5; border-radius: 999px; font: inherit; }
+      form button { border: 0; border-radius: 999px; padding: 0 20px; color: white; background: #e4472b; }
+      form button:disabled { opacity: .6; cursor: wait; }
+      @media (max-width: 520px) { body { padding: 0; } main { min-height: 100vh; border: 0; border-radius: 0; } #feed { padding: 18px; } header { padding: 18px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="brand">Ask <span>YMCA</span></p>
+        <p id="status" role="status">Checking local assistant…</p>
+      </header>
+      <div class="toolbar"><button id="manage-toggle" class="quiet" type="button">Manage university sources</button></div>
+      <section id="admin" aria-label="University source management">
+        <h2>Official source library</h2>
+        <p>Scan the university’s public pages and review documents before approving them for answers. Set <code>ASK_YMCA_ADMIN_TOKEN</code> in the server environment and enter it here.</p>
+        <div class="admin-controls">
+          <input id="admin-token" type="password" placeholder="Admin API token" aria-label="Admin API token">
+          <button id="crawl" type="button">Scan sources</button>
+          <button id="review" type="button">Load review queue</button>
+        </div>
+        <p id="admin-message" role="status"></p>
+        <div id="review-list"></div>
+      </section>
+      <section id="feed" aria-live="polite">
+        <div class="intro">
+          <h1>How can I help?</h1>
+          <p class="muted">Ask about university information. Answers are based on approved source documents; if a fact cannot be verified, I’ll say so.</p>
+          <div class="suggestions">
+            <button type="button">Where can I find official exam notices?</button>
+            <button type="button">How do I contact a university office?</button>
+            <button type="button">How do I apply for a student bus pass?</button>
+          </div>
+        </div>
+      </section>
+      <form id="ask-form">
+        <input id="question" name="question" maxlength="1000" required autocomplete="off" placeholder="Ask a question…" aria-label="Ask a question">
+        <button id="submit" type="submit">Ask</button>
+      </form>
+    </main>
+    <script>
+      const feed = document.querySelector("#feed");
+      const form = document.querySelector("#ask-form");
+      const input = document.querySelector("#question");
+      const submit = document.querySelector("#submit");
+      const status = document.querySelector("#status");
+      const admin = document.querySelector("#admin");
+      const adminMessage = document.querySelector("#admin-message");
+      const adminHeaders = () => ({ Authorization: `Bearer ${document.querySelector("#admin-token").value}` });
+
+      function addMessage(text, kind) {
+        const message = document.createElement("div");
+        message.className = `message ${kind}`;
+        message.textContent = text;
+        feed.append(message);
+        feed.scrollTop = feed.scrollHeight;
+        return message;
+      }
+
+      function addSources(container, sources) {
+        if (!sources.length) return;
+        const list = document.createElement("div");
+        list.className = "sources";
+        for (const source of sources) {
+          const link = document.createElement("a");
+          link.className = "source";
+          link.href = source.url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          const title = document.createElement("strong");
+          title.textContent = source.title;
+          const detail = document.createElement("small");
+          detail.textContent = [source.date, source.page && `Page ${source.page}`, source.status].filter(Boolean).join(" · ");
+          const excerpt = document.createElement("div");
+          excerpt.textContent = source.excerpt;
+          link.append(title, detail, excerpt);
+          list.append(link);
+        }
+        container.after(list);
+      }
+
+      async function ask(question) {
+        document.querySelector(".intro")?.remove();
+        addMessage(question, "user");
+        const pending = addMessage("Checking the available sources…", "assistant");
+        submit.disabled = true;
+        try {
+          const response = await fetch("/api/v1/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+          if (!response.ok) throw new Error(`Request failed (${response.status})`);
+          const data = await response.json();
+          pending.textContent = data.answer;
+          addSources(pending, data.sources);
+          status.textContent = data.agent_status === "ready"
+            ? "Local assistant ready · answers cite approved sources"
+            : data.agent_status === "no_evidence"
+              ? "No approved university documents are indexed yet"
+              : "Local answer model unavailable";
+        } catch (error) {
+          pending.textContent = `I couldn't reach the assistant. ${error.message}`;
+          status.textContent = "Assistant connection error";
+        } finally {
+          submit.disabled = false;
+          input.focus();
+          feed.scrollTop = feed.scrollHeight;
+        }
+      }
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        const question = input.value.trim();
+        if (!question) return;
+        input.value = "";
+        ask(question);
+      });
+      document.querySelector(".suggestions").addEventListener("click", event => {
+        if (event.target instanceof HTMLButtonElement) ask(event.target.textContent);
+      });
+      document.querySelector("#manage-toggle").addEventListener("click", () => {
+        admin.classList.toggle("open");
+      });
+      document.querySelector("#crawl").addEventListener("click", async event => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        adminMessage.textContent = "Scanning official university pages and relevant PDFs…";
+        try {
+          const response = await fetch("/api/v1/admin/crawl", {
+            method: "POST",
+            headers: adminHeaders(),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.detail || `Request failed (${response.status})`);
+          let progress;
+          do {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            const statusResponse = await fetch("/api/v1/admin/crawl/status", {
+              headers: adminHeaders(),
+            });
+            progress = await statusResponse.json();
+            if (!statusResponse.ok) {
+              throw new Error(progress.detail || `Request failed (${statusResponse.status})`);
+            }
+            const recent = progress.sources.slice(0, 3).map(source =>
+              `${source.name}: ${source.status.toLowerCase()}`
+            ).join(" · ");
+            adminMessage.textContent = progress.status === "running"
+              ? `Crawl running${recent ? ` · ${recent}` : ""}`
+              : "Finalizing university source scan…";
+          } while (progress.status === "running");
+          if (progress.status === "failed") throw new Error(progress.error || "University source scan failed.");
+          const result = progress.summary;
+          adminMessage.textContent = `Scanned ${result.sources} sources; ${result.documents_changed} documents added or updated; ${result.documents_skipped} unchanged/empty. ${result.errors.length} fetch errors.`;
+          await loadReviewQueue();
+        } catch (error) {
+          adminMessage.textContent = error.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+      async function loadReviewQueue() {
+        adminMessage.textContent = "Loading documents awaiting approval…";
+        try {
+          const response = await fetch("/api/v1/admin/documents?status=NEEDS_REVIEW", {
+            headers: adminHeaders(),
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.detail || `Request failed (${response.status})`);
+          const list = document.querySelector("#review-list");
+          list.replaceChildren();
+          for (const doc of data) {
+            const row = document.createElement("div");
+            row.className = "review-item";
+            const details = document.createElement("div");
+            const title = document.createElement("a");
+            title.href = doc.url;
+            title.target = "_blank";
+            title.rel = "noopener noreferrer";
+            title.textContent = doc.title;
+            const excerpt = document.createElement("small");
+            excerpt.textContent = `${doc.category} · ${doc.date || "date not listed"} · ${doc.excerpt || "No extracted text"}`;
+            details.append(title, excerpt);
+            const actions = document.createElement("div");
+            actions.className = "review-actions";
+            for (const [reviewStatus, label, style] of [
+              ["FINAL", "Approve final", "approve"],
+              ["TENTATIVE", "Mark tentative", "tentative"],
+              ["ARCHIVED", "Archive", "archive"],
+            ]) {
+              const button = document.createElement("button");
+              button.className = style;
+              button.type = "button";
+              button.textContent = label;
+              button.addEventListener("click", async () => {
+                button.disabled = true;
+                try {
+                  const result = await fetch(`/api/v1/admin/documents/${doc.id}/status`, {
+                    method: "POST",
+                    headers: { ...adminHeaders(), "Content-Type": "application/json" },
+                    body: JSON.stringify({ status: reviewStatus }),
+                  });
+                  const resultData = await result.json();
+                  if (!result.ok) throw new Error(resultData.detail || `Request failed (${result.status})`);
+                  row.remove();
+                  await refreshStatus();
+                } catch (error) {
+                  adminMessage.textContent = error.message;
+                  button.disabled = false;
+                }
+              });
+              actions.append(button);
+            }
+            row.append(details, actions);
+            list.append(row);
+          }
+          adminMessage.textContent = `${data.length} documents awaiting review. Approve only content you have checked.`;
+        } catch (error) {
+          adminMessage.textContent = error.message;
+        }
+      }
+      document.querySelector("#review").addEventListener("click", loadReviewQueue);
+      async function refreshStatus() {
+        const response = await fetch("/api/v1/agent/status");
+        const data = await response.json();
+        status.textContent = data.available && data.knowledge_ready
+          ? `Local assistant ready · ${data.model} · ${data.indexed_documents} source documents`
+          : data.available
+            ? "Local model online · approve documents to enable factual answers"
+            : data.reason === "model_not_installed"
+              ? `Model not installed · ${data.model}`
+              : "Local answer model unavailable";
+      }
+      fetch("/api/v1/agent/status")
+        .then(response => response.ok ? response.json() : Promise.reject(new Error("status unavailable")))
+        .then(data => {
+          status.textContent = data.available && data.knowledge_ready
+            ? `Local assistant ready · ${data.model} · ${data.indexed_documents} source documents`
+            : data.available
+              ? "Local model online · scan and approve university documents to begin"
+              : data.reason === "model_not_installed"
+                ? `Model not installed · ${data.model}`
+                : "Local answer model unavailable";
+        })
+        .catch(() => { status.textContent = "Local answer model unavailable"; });
+    </script>
+  </body>
+</html>

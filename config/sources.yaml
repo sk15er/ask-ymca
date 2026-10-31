@@ -1,0 +1,67 @@
+allowed_hosts:
+  - jcboseust.ac.in
+  - www.jcboseust.ac.in
+max_documents_per_source: 6
+request_delay_seconds: 0.25
+max_response_bytes: 30000000
+sources:
+  - name: University homepage
+    url: https://jcboseust.ac.in/
+    category: university
+    priority: 1
+    enabled: true
+    interval_hours: 24
+  - name: Notice archive
+    url: https://jcboseust.ac.in/notice_page?type=all
+    category: notices
+    priority: 1
+    enabled: true
+    interval_hours: 6
+  - name: Examination notices
+    url: https://jcboseust.ac.in/notice_page?type=examination
+    category: examinations
+    priority: 1
+    enabled: true
+    interval_hours: 6
+  - name: COE office
+    url: https://jcboseust.ac.in/coe-office
+    category: examinations
+    priority: 1
+    enabled: true
+    interval_hours: 24
+  - name: Examination ordinances
+    url: https://jcboseust.ac.in/Odr_2026
+    category: rules
+    priority: 1
+    enabled: true
+    interval_hours: 168
+  - name: Academic calendar
+    url: https://jcboseust.ac.in/academic-calendar
+    category: calendar
+    priority: 1
+    enabled: true
+    interval_hours: 24
+  - name: Schemes and syllabi
+    url: https://jcboseust.ac.in/undergraduate-programme
+    category: academics
+    priority: 2
+    enabled: true
+    interval_hours: 168
+  - name: Hostel
+    url: https://jcboseust.ac.in/hostel-officess
+    category: hostel
+    priority: 2
+    enabled: true
+    interval_hours: 168
+  - name: Central library
+    url: https://jcboseust.ac.in/outreach/Library
+    category: library
+    priority: 2
+    enabled: true
+    interval_hours: 168
+  - name: Training and placements
+    url: https://jcboseust.ac.in/cell/Training_Placement/
+    category: placements
+    priority: 2
+    enabled: true
+    interval_hours: 24
